@@ -2,10 +2,10 @@ import time
 import os
 import pigpio
 import RPi.GPIO as GPIO
-# import signal
-# from xbox360controller import Xbox360Controller
+import signal
+from xbox360controller import Xbox360Controller
 
-signalPin = 18
+signalPin = 10
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(signalPin, GPIO.OUT)
 
@@ -30,13 +30,12 @@ p.start(dc)
 # 	p.ChangeDutyCycle(dc)
 # 	print("Freqency: ", freq, "Duty Cycle: ", dc)
 
-# Controller Control
-# controller = Xbox360Controller(0, axis_threshold=0.2)
+controller = Xbox360Controller(0, axis_threshold=0.2)
 while(1):
 	# randomVal = controller.axis_l._value_y
-	speed = float(input("Enter Speed [-1,1]: "))
+	# speed = float(input("Enter Speed [-1,1]: "))
+	speed = controller.axis_l._value_y
 	
-	# print("Axis R: ", controller.axis_l._value_y)
 	dc = dc_n + (speed*20)
 	if dc > dc_n-1 and dc < dc_n+1:
 		dc = 0
@@ -45,7 +44,7 @@ while(1):
 	elif dc > dc_max:
 		dc = dc_max
 	p.ChangeDutyCycle(dc)
-	print("Freqency: ", freq, "Duty Cycle: ", dc)
+	print("L Axis: ",controller.axis_l._value_y,  "Freqency: ", freq, "Duty Cycle: ", dc)
 	
 
 #while (1):
